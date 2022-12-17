@@ -70,16 +70,17 @@ export default function SearchParams() {
             value={breed}
           >
             <option />
-            {breeds.map((a) => (
-              <option value={a} key={a}>
-                {a}
-              </option>
-            ))}
+            {breeds &&
+              breeds.map((a) => (
+                <option value={a} key={a}>
+                  {a}
+                </option>
+              ))}
           </select>
         </label>
         <button>Submit</button>
       </form>
-      <Results pets={pets}/>
+      <Results pets={pets} />
     </div>
   );
 }

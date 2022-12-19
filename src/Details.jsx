@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "./fetcher";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import Modal from "./Modal";
+import useAdoptedPets from "./AdoptedPetContext";
 
 function Details() {
+  const { setAdoptedPets } = useAdoptedPets();
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { id } = useParams();
   const url = `http://pets-v2.dev-apis.com/pets?id=${id}`;
@@ -39,7 +42,14 @@ function Details() {
         <Modal>
           <h1>Would you like to adopt {pet.name}</h1>
           <div className="buttons">
-            <button>Yes</button>
+            <button
+              onClick={() => {
+                setAdoptedPets((pets) => [pet, ...pets]);
+                navigate("/");
+              }}
+            >
+              Yes
+            </button>
             <button onClick={() => setShow(false)}>No</button>
           </div>
         </Modal>

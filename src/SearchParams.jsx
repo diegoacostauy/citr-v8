@@ -37,8 +37,8 @@ export default function SearchParams() {
   };
 
   return (
-    <div className="search-params">
-      <form action="" onSubmit={handleSubmit}>
+    <div className="my-0 mx-auto w-11/12">
+      <form action="" onSubmit={handleSubmit} className="p-10 mb-10 rounded-lg bg-gray-200 shadow-lg flex flex-col justify-center items-center">
         {adoptedPets.length}
         <label htmlFor="location">
           Location

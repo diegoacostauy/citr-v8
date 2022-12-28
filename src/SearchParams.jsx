@@ -38,16 +38,26 @@ export default function SearchParams() {
 
   return (
     <div className="my-0 mx-auto w-11/12">
-      <form action="" onSubmit={handleSubmit} className="p-10 mb-10 rounded-lg bg-gray-200 shadow-lg flex flex-col justify-center items-center">
+      <form
+        action=""
+        onSubmit={handleSubmit}
+        className="mb-10 flex flex-col items-center justify-center rounded-lg bg-gray-200 p-10 shadow-lg"
+      >
         {adoptedPets.length}
         <label htmlFor="location">
           Location
-          <input type="text" id="location" name="location" />
+          <input
+            type="text"
+            id="location"
+            name="location"
+            className="mb-5 block w-60"
+          />
         </label>
         <label htmlFor="animal">
           Animal
           <select
             name="animal"
+            className="mb-5 block w-60"
             id="animal"
             onChange={(ev) => setAnimal(ev.target.value)}
           >
@@ -61,7 +71,12 @@ export default function SearchParams() {
         </label>
         <label htmlFor="breed">
           Breed
-          <select name="breed" id="breed" disabled={breeds.length == 0}>
+          <select
+            name="breed"
+            id="breed"
+            disabled={breeds.length == 0}
+            className="mb-5 block w-60"
+          >
             <option />
             {breeds &&
               breeds.map((a) => (
@@ -71,7 +86,9 @@ export default function SearchParams() {
               ))}
           </select>
         </label>
-        <button>Submit</button>
+        <button className="rounded border-none bg-orange-500 px-6 py-2 text-white hover:opacity-60">
+          Submit
+        </button>
       </form>
       <Results pets={pets} />
     </div>

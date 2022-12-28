@@ -2,7 +2,7 @@ import Pet from "./Pet";
 
 export default function Results({ pets }) {
   return (
-    <div className="search">
+    <div className="grid grid-cols-2 gap-4">
       {pets.length ? (
         pets.map((pet) => (
           <Pet

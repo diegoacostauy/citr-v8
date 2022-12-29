@@ -11,7 +11,7 @@ const HTML = fs
   .readFileSync(path.resolve(__dirname, "./dist/client/index.html"))
   .toString();
 
-const parts = HTML.split("not rendered");
+const parts = HTML.split("Not rendered!");
 
 const app = express();
 

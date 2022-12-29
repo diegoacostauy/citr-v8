@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useDeferredValue, useMemo, useTransition } from "react";
 import useBreedList from "./useBreedList";
 import Results from "./Results";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import useAdoptedPets from "./AdoptedPetContext";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 export default function SearchParams() {
+  const [isPending, startTransition] = useTransition();
   const { adoptedPets } = useAdoptedPets();
   const [requestParams, setRequestParams] = useState({
     location: "",
@@ -25,13 +26,20 @@ export default function SearchParams() {
       ),
   });
   const pets = data?.pets ?? [];
+  const deferredPets = useDeferredValue(pets);
+  const renderPets = useMemo(
+    () => <Results pets={deferredPets} />,
+    [deferredPets]
+  );
 
   const handleSubmit = (ev) => {
     const formData = new FormData(ev.target);
-    setRequestParams({
-      location: formData.get("location") ?? "",
-      animal: formData.get("animal") ?? "",
-      breed: formData.get("breed") ?? "",
+    startTransition(() => {
+      setRequestParams({
+        location: formData.get("location") ?? "",
+        animal: formData.get("animal") ?? "",
+        breed: formData.get("breed") ?? "",
+      });
     });
     ev.preventDefault();
   };
@@ -71,9 +79,13 @@ export default function SearchParams() {
               ))}
           </select>
         </label>
-        <button>Submit</button>
+        {
+          <button disabled={isPending}>
+            {isPending ? "Sending..." : "Submit"}
+          </button>
+        }
       </form>
-      <Results pets={pets} />
+      {renderPets}
     </div>
   );
 }

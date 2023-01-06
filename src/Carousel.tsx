@@ -1,6 +1,7 @@
 import { Component } from "react";
+import { CarouselProps } from "./types";
 
-class Carousel extends Component {
+class Carousel extends Component<CarouselProps> {
   state = {
     active: 0,
   };

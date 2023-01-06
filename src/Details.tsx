@@ -6,14 +6,18 @@ import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import Modal from "./Modal";
 import useAdoptedPets from "./AdoptedPetContext";
+import { ApiPetResponse, Pet } from "./types";
 
 function Details() {
+  const { id } = useParams();
+
+  if (!id) throw new Error('Why did you not give me an id?');
+
   const { setAdoptedPets } = useAdoptedPets();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { id } = useParams();
   const url = `http://pets-v2.dev-apis.com/pets?id=${id}`;
-  const { isLoading, data } = useQuery({
+  const { isLoading, data } = useQuery<ApiPetResponse>({
     queryKey: ["detail", id],
     queryFn: () => fetcher(url),
   });
@@ -25,7 +29,9 @@ function Details() {
       </div>
     );
 
-  const pet = data.pets[0] ?? {};
+  const pet = data?.pets[0];
+
+  if (!pet) throw new Error('No pet lol');
 
   return (
     <div className="details">
@@ -40,18 +46,20 @@ function Details() {
       </div>
       {show && (
         <Modal>
-          <h1>Would you like to adopt {pet.name}</h1>
-          <div className="buttons">
-            <button
-              onClick={() => {
-                setAdoptedPets((pets) => [pet, ...pets]);
-                navigate("/");
-              }}
-            >
-              Yes
-            </button>
-            <button onClick={() => setShow(false)}>No</button>
-          </div>
+          <>
+            <h1>Would you like to adopt {pet.name}</h1>
+            <div className="buttons">
+              <button
+                onClick={() => {
+                  setAdoptedPets((pets: Pet[]) => [pet, ...pets]);
+                  navigate("/");
+                }}
+              >
+                Yes
+              </button>
+              <button onClick={() => setShow(false)}>No</button>
+            </div>
+          </>
         </Modal>
       )}
     </div>

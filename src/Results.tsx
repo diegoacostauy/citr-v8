@@ -1,11 +1,14 @@
-import Pet from "./Pet";
+import PetComponent from "./Pet";
+import { Pet } from "./types";
 
-export default function Results({ pets }) {
+type PetProps = Omit<Pet, 'description'>;
+
+export default function Results({ pets }: { pets: PetProps[]}) {
   return (
     <div className="search">
       {pets.length ? (
         pets.map((pet) => (
-          <Pet
+          <PetComponent
             name={pet.name}
             breed={pet.breed}
             animal={pet.animal}

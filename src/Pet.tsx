@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import { Pet } from "./types";
 
-export default function Pet({ name, animal, breed, images, location, id}) {
+interface PetProps extends Omit<Pet, 'description' | 'city' | 'state'> {
+  location: string
+};
+
+export default function Pet({ name, animal, breed, images, location, id}: PetProps ) {
   let hero = "http://pets-images.dev-apis.com/pets/none.jpg";
   if (images.length) {
     hero = images[0];

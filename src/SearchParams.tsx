@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, SyntheticEvent } from "react";
 import useBreedList from "./useBreedList";
 import Results from "./Results";
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "./fetcher";
 import useAdoptedPets from "./AdoptedPetContext";
+import { Animal, ApiPetResponse } from "./types";
 
-const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
+const ANIMALS: Animal[] = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 export default function SearchParams() {
   const { adoptedPets } = useAdoptedPets();
@@ -14,10 +15,10 @@ export default function SearchParams() {
     animal: "",
     breed: "",
   });
-  const [animal, setAnimal] = useState("");
+  const [animal, setAnimal] = useState("" as Animal);
   const [breeds] = useBreedList(animal);
 
-  const { data } = useQuery({
+  const { data } = useQuery<ApiPetResponse>({
     queryKey: ["search", requestParams],
     queryFn: () =>
       fetcher(
@@ -26,12 +27,12 @@ export default function SearchParams() {
   });
   const pets = data?.pets ?? [];
 
-  const handleSubmit = (ev) => {
-    const formData = new FormData(ev.target);
+  const handleSubmit = (ev: SyntheticEvent) => {
+    const formData = new FormData(ev.target as HTMLFormElement);
     setRequestParams({
-      location: formData.get("location") ?? "",
-      animal: formData.get("animal") ?? "",
-      breed: formData.get("breed") ?? "",
+      location: formData.get("location")?.toString() ?? "",
+      animal: formData.get("animal")?.toString() ?? "",
+      breed: formData.get("breed")?.toString() ?? "",
     });
     ev.preventDefault();
   };
@@ -49,7 +50,7 @@ export default function SearchParams() {
           <select
             name="animal"
             id="animal"
-            onChange={(ev) => setAnimal(ev.target.value)}
+            onChange={(ev) => setAnimal(ev.target.value as Animal)}
           >
             <option />
             {ANIMALS.map((a) => (

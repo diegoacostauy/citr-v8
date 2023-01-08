@@ -3,7 +3,6 @@ const fetcher = async (url) => {
   if (!res.ok) {
     throw new Error(`${url} fetch not ok.`);
   }
-
   return res.json();
 };
 

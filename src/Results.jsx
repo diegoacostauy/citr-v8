@@ -16,7 +16,7 @@ export default function Results({ pets }) {
           />
         ))
       ) : (
-        <h1>No Pets found!</h1>
+        <h1>No Pets found!!</h1>
       )}
     </div>
   );

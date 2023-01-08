@@ -1,10 +1,11 @@
 import React from "react";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
 import SearchParams from "./SearchParams";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Details from "./Details";
-import { AdoptedPetContextProvider } from "./AdoptedPetContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +20,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <AdoptedPetContextProvider>
+        <Provider store={store}>
           <div className="main">
             <header>
               <Link to="/">
@@ -31,7 +32,7 @@ const App = () => {
               <Route path="/" element={<SearchParams />} />
             </Routes>
           </div>
-        </AdoptedPetContextProvider>
+        </Provider>
       </QueryClientProvider>
     </BrowserRouter>
   );

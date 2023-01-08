@@ -1,22 +1,18 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { adopt } from "./redux/AdoptedPetsSlice";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { fetcher } from "./fetcher";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import Modal from "./Modal";
-import useAdoptedPets from "./AdoptedPetContext";
+import { useGetPetQuery } from "./redux/petApiService";
 
 function Details() {
-  const { setAdoptedPets } = useAdoptedPets();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { id } = useParams();
-  const url = `http://pets-v2.dev-apis.com/pets?id=${id}`;
-  const { isLoading, data } = useQuery({
-    queryKey: ["detail", id],
-    queryFn: () => fetcher(url),
-  });
+  const { isLoading, data: pet } = useGetPetQuery(id);
 
   if (isLoading)
     return (
@@ -24,8 +20,6 @@ function Details() {
         <div className="loader">🌀</div>
       </div>
     );
-
-  const pet = data.pets[0] ?? {};
 
   return (
     <div className="details">
@@ -44,7 +38,7 @@ function Details() {
           <div className="buttons">
             <button
               onClick={() => {
-                setAdoptedPets((pets) => [pet, ...pets]);
+                dispatch(adopt(pet));
                 navigate("/");
               }}
             >

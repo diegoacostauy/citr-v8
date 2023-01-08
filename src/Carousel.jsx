@@ -14,12 +14,13 @@ class Carousel extends Component {
     const { images } = this.props;
     return (
       <div className="carousel">
-        <img src={images[active]} alt="Animal hero" />
+        <img data-testid="hero" src={images[active]} alt="Animal hero" />
         <div className="carousel-smaller">
           {images.map((img, idx) => (
             // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,
             <img
               className={idx == active ? "active" : ""}
+              data-testid={`thumb-${idx}`}
               src={img}
               key={idx}
               alt="Thumb"
